@@ -160,6 +160,13 @@ KUBECONFIG=kcfg_remote kubectl get pod -A
 # projectsveltos   sveltos-agent-manager-857d5594fc-7gj9p   1/1     Running   0          17m
 ~~~
 
+## Cluster removal
+~~~bash
+kubectl delete cld remote -n kcm-system
+# Also remove related pvc, it's not deleted automatically and could make troubles in a next setup
+kubectl delete pvc etcd-data-kmc-remote-etcd-0 -n kcm-system
+~~~
+
 ## Troubleshooting
 
 ### Control plane pod `watcher` error
