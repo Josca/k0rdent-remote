@@ -159,3 +159,15 @@ KUBECONFIG=kcfg_remote kubectl get pod -A
 # kube-system      metrics-server-df68c566c-m8jmm           1/1     Running   0          17m
 # projectsveltos   sveltos-agent-manager-857d5594fc-7gj9p   1/1     Running   0          17m
 ~~~
+
+## Troubleshooting
+
+### Control plane pod `watcher` error
+Issue: Getting error in k0rdent pod `kmc-remote-0`: `level=error msg="Failed to create watcher" component=applier-manager error="too many open files"`.
+
+Solution: Updating Linux resource limits:
+~~~bash
+ulimit -n # 1024 increased to 65535
+sysctl fs.inotify.max_user_watches # 250035 increased to 524288
+sysctl fs.inotify.max_user_instances # 128 increased to 512
+~~~
