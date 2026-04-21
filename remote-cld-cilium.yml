@@ -36,7 +36,7 @@ spec:
     services:
     - template: cilium-1-19-0
       name: cilium
-      namespace: cilium
+      namespace: kube-system
       values: |
         cilium:
           cluster:

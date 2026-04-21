@@ -83,7 +83,7 @@ spec:
     services:
     - template: cilium-1-19-0
       name: cilium
-      namespace: cilium
+      namespace: kube-system
       values: |
         cilium:
           cluster:
@@ -144,16 +144,16 @@ kubectl get cld -A
 kubectl get secret remote-kubeconfig -n kcm-system -o=jsonpath={.data.value} | base64 -d > kcfg_remote
 KUBECONFIG=kcfg_remote kubectl get pod -A
 # NAMESPACE        NAME                                     READY   STATUS    RESTARTS   AGE
-# cilium           cilium-4kj45                             1/1     Running   0          16m
-# cilium           cilium-operator-76dc9b8948-p55h5         1/1     Running   0          17m
-# cilium           cilium-operator-76dc9b8948-xvp7q         1/1     Running   0          17m
-# cilium           cilium-t22pq                             1/1     Running   0          16m
-# kube-system      coredns-5f55cfb9f6-5xk9f                 1/1     Running   0          16m
-# kube-system      coredns-5f55cfb9f6-f6kkl                 1/1     Running   0          16m
-# kube-system      konnectivity-agent-kvrcz                 1/1     Running   0          16m
-# kube-system      konnectivity-agent-qn6xv                 1/1     Running   0          16m
-# kube-system      metrics-server-df68c566c-m8jmm           1/1     Running   0          17m
-# projectsveltos   sveltos-agent-manager-857d5594fc-7gj9p   1/1     Running   0          17m
+# kube-system      cilium-g5w22                             1/1     Running   0          37m
+# kube-system      cilium-jfh2p                             1/1     Running   0          37m
+# kube-system      cilium-operator-76dc9b8948-k2qj4         1/1     Running   0          37m
+# kube-system      cilium-operator-76dc9b8948-wdjwk         1/1     Running   0          37m
+# kube-system      coredns-5f55cfb9f6-5tnnr                 1/1     Running   0          37m
+# kube-system      coredns-5f55cfb9f6-t8drz                 1/1     Running   0          37m
+# kube-system      konnectivity-agent-fkhns                 1/1     Running   0          37m
+# kube-system      konnectivity-agent-hnq94                 1/1     Running   0          37m
+# kube-system      metrics-server-df68c566c-9vxd2           1/1     Running   0          37m
+# projectsveltos   sveltos-agent-manager-857d5594fc-2j7v5   1/1     Running   0          37m
 ~~~
 
 ## Cluster removal
