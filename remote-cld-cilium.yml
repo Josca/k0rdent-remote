@@ -19,14 +19,10 @@ spec:
       address: <worker1-ip>
       user: root # The user must have root permissions
       port: 22
-      labels:
-        node-role.kubernetes.io/system-worker: "true"
     - name: worker2
       address: <worker2-ip>
       user: root # The user must have root permissions
       port: 22
-      labels:
-        node-role.kubernetes.io/system-worker: "true"
 
     k0s:
       version: v1.35.3+k0s.0
