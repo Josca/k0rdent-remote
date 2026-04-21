@@ -1,0 +1,85 @@
+apiVersion: k0rdent.mirantis.com/v1beta1
+kind: ClusterDeployment
+metadata:
+  name: remote
+  namespace: kcm-system
+  labels:
+    type: remote
+spec:
+  template: remote-cluster-1-0-22
+  credential: remote-credential
+  propagateCredentials: false
+  config:
+    controlPlaneNumber: 1 # Using simple setup 1 master, 2 workers
+    k0smotron:
+      service:
+        type: NodePort # Simple setup with no master loadbalancer (nodes run in a single network)
+    machines:
+    - name: worker1
+      address: <worker1-ip>
+      user: root # The user must have root permissions
+      port: 22
+      labels:
+        node-role.kubernetes.io/system-worker: "true"
+    - name: worker2
+      address: <worker2-ip>
+      user: root # The user must have root permissions
+      port: 22
+      labels:
+        node-role.kubernetes.io/system-worker: "true"
+
+    k0s:
+      version: v1.35.3+k0s.0
+      network: # prepare for cilium
+        calico: null
+        provider: custom
+        kubeProxy:
+          disabled: true
+
+  serviceSpec:
+    services:
+    - template: cilium-1-19-0
+      name: cilium
+      namespace: cilium
+      values: |
+        cilium:
+          cluster:
+            name: cilium
+          hubble:
+            tls:
+              enabled: false
+            auto:
+              method: helm
+              certManagerIssuerRef: {}
+            ui:
+              enabled: false
+              ingress:
+                enabled: false
+            relay:
+              enabled: false
+          ipv4:
+            enabled: true
+          ipv6:
+            enabled: false
+          envoy:
+            enabled: false
+          egressGateway:
+            enabled: false
+          kubeProxyReplacement: "true"
+          serviceAccounts:
+            cilium:
+              name: cilium
+            operator:
+              name: cilium-operator
+          localRedirectPolicy: true
+          ipam:
+            mode: cluster-pool
+            operator:
+              clusterPoolIPv4PodCIDRList:
+              - "192.168.224.0/20"
+              - "192.168.210.0/20"
+              clusterPoolIPv6PodCIDRList:
+              - "fd00::/104"
+          tunnelProtocol: geneve
+          k8sServiceHost: "{{ .Cluster.spec.controlPlaneEndpoint.host }}"
+          k8sServicePort: "{{ .Cluster.spec.controlPlaneEndpoint.port }}"
