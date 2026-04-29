@@ -8,7 +8,7 @@ Prepare 3 Linux machines (tested with Ubuntu 24.04) in the same network.
 - 2. worker1
 - 3. worker2
 
-## Prepare SSJ access to workers
+## Prepare SSH access to workers
 Ensure SSH root access to machines worker1 and worker2:
 ~~~bash
 ssh-keygen -f ~/.ssh/idk0r # generate extra ssh key-pair for the case
